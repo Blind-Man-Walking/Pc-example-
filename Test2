@@ -1,145 +1,97 @@
 -- ##################################################################
 -- ##################################################################
--- ###   [  START OF EXAMPLE SCRIPT  ]   ###
--- ### (You can delete or edit all this code) ###
+-- ###   [  START OF YOUR SCRIPT  ]   ###
+-- ### (This is just an example of how to use the Library) ###
 -- ##################################################################
 -- ##################################################################
 
--- ### Default settings for THIS EXAMPLE ###
+-- Wait for the Library to be loaded by the other script
+repeat task.wait() until _G.Library
+local Library = _G.Library
+
+-- ### Default settings for THIS SCRIPT ###
 local defaultSettings = {
-    -- Self Section
-    AutoFarm = false,
-    InfiniteJump = false,
-    ESP = true,
-    GodMode = false,
-    Noclip = false,
-    InfiniteStamina = true,
-    AutoRob = false,
-    AutoPickup = true,
-    SelectPart = "Head",
-    SelectPlayer = "Select...",
-    Walkspeed = "16",
-    
-    -- Visuals Section
-    Chams = 0,
-    WallhackOpacity = 50,
-    SkyColorRed = 100,
-    SkyColorGreen = 100,
-    SkyColorBlue = 100,
-    Brightness = 1,
-    
-    -- Settings
-    Theme = "Blue (Default)",
-    ToggleKey = Enum.KeyCode.RightShift,
-    
-    -- Watermark Settings
-    WatermarkTransparency = 20,
-    WatermarkFontSize = 16,
-    WatermarkX = 100,
-    WatermarkY = 0
+    AutoFarm = false, InfiniteJump = false, ESP = true, GodMode = false,
+    Noclip = false, InfiniteStamina = true, AutoRob = false, AutoPickup = true,
+    SelectPart = "Head", SelectPlayer = "Select...", Walkspeed = "16",
+    Chams = 0, WallhackOpacity = 50, SkyColorRed = 100, SkyColorGreen = 100,
+    SkyColorBlue = 100, Brightness = 1, Theme = "Blue (Default)",
+    ToggleKey = Enum.KeyCode.RightShift, WatermarkTransparency = 20,
+    WatermarkFontSize = 16, WatermarkX = 100, WatermarkY = 0
 }
 local currentSettings = table.clone(defaultSettings)
-
--- This table will hold the 'setValue' functions for all UI elements
 local allUIElements = {}
 
 
 -- ##################################################################
 -- ### 1. CREATE THE WINDOW ###
 -- ##################################################################
--- This is where you set your title!
-local mainScreenGui, rectangle, tabContainer, contentContainer, titleLabel, subtitleLabel, toggleGui = createWindow("BlindHubOfficial", "discord.gg/BlindHub")
+local mainScreenGui, rectangle, tabContainer, contentContainer, titleLabel, subtitleLabel, toggleGui, setUIVisible = Library.createWindow("BlindHubOfficial", "discord.gg/BlindHub")
 
 -- ##################################################################
 -- ### 2. CREATE THE TABS ###
 -- ##################################################################
-local mainPage, mainTabButton = createTab("Main", tabContainer, contentContainer)
-local combatPage, combatTabButton = createTab("Combat", tabContainer, contentContainer)
-local visualsPage, visualsTabButton = createTab("Visuals", tabContainer, contentContainer)
-local vehiclePage, vehicleTabButton = createTab("Vehicle", tabContainer, contentContainer)
-local playerPage, playerTabButton = createTab("Player", tabContainer, contentContainer)
-local miscPage, miscTabButton = createTab("Misc", tabContainer, contentContainer)
-local settingsPage, settingsTabButton = createTab("Settings", tabContainer, contentContainer)
+local mainPage, mainTabButton = Library.createTab("Main", tabContainer, contentContainer)
+local combatPage, combatTabButton = Library.createTab("Combat", tabContainer, contentContainer)
+local visualsPage, visualsTabButton = Library.createTab("Visuals", tabContainer, contentContainer)
+local vehiclePage, vehicleTabButton = Library.createTab("Vehicle", tabContainer, contentContainer)
+local playerPage, playerTabButton = Library.createTab("Player", tabContainer, contentContainer)
+local miscPage, miscTabButton = Library.createTab("Misc", tabContainer, contentContainer)
+local settingsPage, settingsTabButton = Library.createTab("Settings", tabContainer, contentContainer)
 
 
 -- ##################################################################
 -- ### 3. CREATE THE "MAIN" PAGE CONTENT ###
 -- ##################################################################
 
--- ### "Self Section" ###
-local selfSection, selfContent = createBigSection(mainPage, "Self Section", bigPos)
-
-local autoFarmToggle, getAutoFarm, setAutoFarm = createToggleButton(selfContent, "Auto Farm", currentSettings.AutoFarm)
-local infJumpToggle, getInfJump, setInfJump = createToggleButton(selfContent, "Infinite Jump", currentSettings.InfiniteJump)
-local espToggle, getESP, setESP = createToggleButton(selfContent, "ESP", currentSettings.ESP)
-local godModeToggle, getGodMode, setGodMode = createToggleButton(selfContent, "God Mode", currentSettings.GodMode)
-local noclipToggle, getNoclip, setNoclip = createToggleButton(selfContent, "Noclip", currentSettings.Noclip)
-local infStaminaToggle, getInfStamina, setInfStamina = createToggleButton(selfContent, "Infinite Stamina", currentSettings.InfiniteStamina)
-local autoRobToggle, getAutoRob, setAutoRob = createToggleButton(selfContent, "Auto Rob", currentSettings.AutoRob)
-local autoPickupToggle, getAutoPickup, setAutoPickup = createToggleButton(selfContent, "Auto Pickup", currentSettings.AutoPickup)
-
+local selfSection, selfContent = Library.createBigSection(mainPage, "Self Section", Library.Positions.Big)
+local autoFarmToggle, getAutoFarm, setAutoFarm = Library.createToggleButton(selfContent, "Auto Farm", currentSettings.AutoFarm)
+local infJumpToggle, getInfJump, setInfJump = Library.createToggleButton(selfContent, "Infinite Jump", currentSettings.InfiniteJump)
+local espToggle, getESP, setESP = Library.createToggleButton(selfContent, "ESP", currentSettings.ESP)
+local godModeToggle, getGodMode, setGodMode = Library.createToggleButton(selfContent, "God Mode", currentSettings.GodMode)
+local noclipToggle, getNoclip, setNoclip = Library.createToggleButton(selfContent, "Noclip", currentSettings.Noclip)
+local infStaminaToggle, getInfStamina, setInfStamina = Library.createToggleButton(selfContent, "Infinite Stamina", currentSettings.InfiniteStamina)
+local autoRobToggle, getAutoRob, setAutoRob = Library.createToggleButton(selfContent, "Auto Rob", currentSettings.AutoRob)
+local autoPickupToggle, getAutoPickup, setAutoPickup = Library.createToggleButton(selfContent, "Auto Pickup", currentSettings.AutoPickup)
 local partOptions = {"Head", "Torso", "HumanoidRootPart", "UpperTorso", "LowerTorso", "Right Leg", "Left Leg", "Right Arm", "Left Arm"}
-local partDropdown, getSelectedPart, _, partDropdownChanged, setSelectPart = createDropdown(selfContent, "Select Part", partOptions, rectangle)
+local partDropdown, getSelectedPart, _, partDropdownChanged, setSelectPart = Library.createDropdown(selfContent, "Select Part", partOptions, rectangle)
 setSelectPart(currentSettings.SelectPart)
-
-local playerDropdown, getSelectedPlayer, updatePlayerDropdown, playerDropdownChanged, setSelectPlayer = createPlayerDropdown(selfContent, rectangle)
+local playerDropdown, getSelectedPlayer, updatePlayerDropdown, playerDropdownChanged, setSelectPlayer = Library.createPlayerDropdown(selfContent, rectangle)
 setSelectPlayer(currentSettings.SelectPlayer)
-
-local testNotifButton = createButton(selfContent, "Test Notification")
+local testNotifButton = Library.createButton(selfContent, "Test Notification")
 testNotifButton.MouseButton1Click:Connect(function()
-    createNotification("BlindHub", "This is a test notification!")
+    Library.createNotification("BlindHub", "This is a test notification!")
 end)
+local walkspeedBox, getWalkspeed, setWalkspeed = Library.createTextBox(selfContent, "Enter Walkspeed...", currentSettings.Walkspeed, rectangle)
+local combatSection, combatContent = Library.createSmallSection(mainPage, "Combat Section", Library.Positions.SmallTop)
+Library.createButton(combatContent, "Kill Aura")
+Library.createButton(combatContent, "Trigger Bot")
+Library.createButton(combatContent, "Aimbot Part")
+Library.createButton(combatContent, "Infinite Ammo")
+Library.createButton(combatContent, "No Recoil")
+Library.createButton(combatContent, "No Spread")
+Library.createButton(combatContent, "Rapid Fire")
+Library.createButton(combatContent, "Aimlock")
+local visualsSection, visualsContent = Library.createSmallSection(mainPage, "Visuals Section", Library.Positions.SmallBottom)
+local chamsSlider, getChams, chamsChanged, setChams = Library.createSlider(visualsContent, "Chams", 0, 10, currentSettings.Chams, rectangle)
+local wallhackSlider, getWallhack, wallhackChanged, setWallhack = Library.createSlider(visualsContent, "Wallhack Opacity", 0, 100, currentSettings.WallhackOpacity, rectangle)
+local skyRedSlider, getSkyRed, skyRedChanged, setSkyRed = Library.createSlider(visualsContent, "Sky Color Red", 0, 255, currentSettings.SkyColorRed, rectangle)
+local skyGreenSlider, getSkyGreen, skyGreenChanged, setSkyGreen = Library.createSlider(visualsContent, "Sky Color Green", 0, 255, currentSettings.SkyColorGreen, rectangle)
+local skyBlueSlider, getSkyBlue, skyBlueChanged, setSkyBlue = Library.createSlider(visualsContent, "Sky Color Blue", 0, 255, currentSettings.SkyColorBlue, rectangle)
+local brightnessSlider, getBrightness, brightnessChanged, setBrightness = Library.createSlider(visualsContent, "Brightness", 0, 5, currentSettings.Brightness, rectangle)
 
-local walkspeedBox, getWalkspeed, setWalkspeed = createTextBox(selfContent, "Enter Walkspeed...", currentSettings.Walkspeed, rectangle)
-
--- ### "Combat Section" ###
-local combatSection, combatContent = createSmallSection(mainPage, "Combat Section", smallTopPos)
-createButton(combatContent, "Kill Aura")
-createButton(combatContent, "Trigger Bot")
-createButton(combatContent, "Aimbot Part")
-createButton(combatContent,AF, "Infinite Ammo")
-createButton(combatContent, "No Recoil")
-createButton(combatContent, "No Spread")
-createButton(combatContent, "Rapid Fire")
-createButton(combatContent, "Aimlock")
-
--- ### "Visuals Section" ###
-local visualsSection, visualsContent = createSmallSection(mainPage, "Visuals Section", smallBottomPos)
-local chamsSlider, getChams, chamsChanged, setChams = createSlider(visualsContent, "Chams", 0, 10, currentSettings.Chams, rectangle)
-local wallhackSlider, getWallhack, wallhackChanged, setWallhack = createSlider(visualsContent, "Wallhack Opacity", 0, 100, currentSettings.WallhackOpacity, rectangle)
-local skyRedSlider, getSkyRed, skyRedChanged, setSkyRed = createSlider(visualsContent, "Sky Color Red", 0, 255, currentSettings.SkyColorRed, rectangle)
-local skyGreenSlider, getSkyGreen, skyGreenChanged, setSkyGreen = createSlider(visualsContent, "Sky Color Green", 0, 255, currentSettings.SkyColorGreen, rectangle)
-local skyBlueSlider, getSkyBlue, skyBlueChanged, setSkyBlue = createSlider(visualsContent, "Sky Color Blue", 0, 255, currentSettings.SkyColorBlue, rectangle)
-local brightnessSlider, getBrightness, brightnessChanged, setBrightness = createSlider(visualsContent, "Brightness", 0, 5, currentSettings.Brightness, rectangle)
-
-
--- ### Link all settings for THIS EXAMPLE ###
 allUIElements = {
-    AutoFarm = setAutoFarm,
-    InfiniteJump = setInfJump,
-    ESP = setESP,
-    GodMode = setGodMode,
-    Noclip = setNoclip,
-    InfiniteStamina = setInfStamina,
-    AutoRob = setAutoRob,
-    AutoPickup = setAutoPickup,
-    SelectPart = setSelectPart,
-    SelectPlayer = setSelectPlayer,
-    Walkspeed = setWalkspeed,
-    Chams = setChams,
-    WallhackOpacity = setWallhack,
-    SkyColorRed = setSkyRed,
-    SkyColorGreen = setSkyGreen,
-    SkyColorBlue = setSkyBlue,
-    Brightness = setBrightness,
+    AutoFarm = setAutoFarm, InfiniteJump = setInfJump, ESP = setESP, GodMode = setGodMode,
+    Noclip = setNoclip, InfiniteStamina = setInfStamina, AutoRob = setAutoRob, AutoPickup = setAutoPickup,
+    SelectPart = setSelectPart, SelectPlayer = setSelectPlayer, Walkspeed = setWalkspeed,
+    Chams = setChams, WallhackOpacity = setWallhack, SkyColorRed = setSkyRed,
+    SkyColorGreen = setSkyGreen, SkyColorBlue = setSkyBlue, Brightness = setBrightness
 }
 
 -- ##################################################################
 -- ### 4. CREATE THE "SETTINGS" PAGE CONTENT ###
 -- ##################################################################
 
--- This function is part of the EXAMPLE, not the library,
--- because it's specific to the "BlindHub" settings.
 local function createSettingsTab(settingsPage, rectangle)
     local getToggleKey, setToggleKey
     local getWatermarkTrans, setWatermarkTrans, transChanged
@@ -148,59 +100,62 @@ local function createSettingsTab(settingsPage, rectangle)
     local getWatermarkY, setWatermarkY, yPosChanged
     local getTheme, setTheme
     
-    local uiSettingsSection, uiSettingsContent = createBigSection(settingsPage, "UI Settings", bigPos)
-    local themeSection, themeContent = createBigSection(settingsPage, "Theme", smallTopPos)
+    local uiSettingsSection, uiSettingsContent = Library.createBigSection(settingsPage, "UI Settings", Library.Positions.Big)
+    local themeSection, themeContent = Library.createBigSection(settingsPage, "Theme", Library.Positions.SmallTop)
     
-    -- ### UI Settings ###
     local keybindButton
-    keybindButton, getToggleKey, setToggleKey = createKeybind(uiSettingsContent, "Toggle UI", currentSettings.ToggleKey)
+    keybindButton, getToggleKey, setToggleKey = Library.createKeybind(uiSettingsContent, "Toggle UI", currentSettings.ToggleKey)
     allUIElements.ToggleKey = setToggleKey
     
-    local resetSettingsButton = createButton(uiSettingsContent, "Reset Config")
-    local saveSettingsButton = createButton(uiSettingsContent, "Save Config")
-    local loadSettingsButton = createButton(uiSettingsContent, "Load Config")
-    local unloadButton = createButton(uiSettingsContent, "Unload UI")
+    local resetSettingsButton = Library.createButton(uiSettingsContent, "Reset Config")
+    local saveSettingsButton = Library.createButton(uiSettingsContent, "Save Config")
+    local loadSettingsButton = Library.createButton(uiSettingsContent, "Load Config")
+    local unloadButton = Library.createButton(uiSettingsContent, "Unload UI")
 
-    createDivider(uiSettingsContent)
+    Library.createDivider(uiSettingsContent)
     
     local transparencySlider
-    transparencySlider, getWatermarkTrans, transChanged, setWatermarkTrans = createSlider(uiSettingsContent, "Watermark Transparency", 0, 100, currentSettings.WatermarkTransparency, rectangle)
+    transparencySlider, getWatermarkTrans, transChanged, setWatermarkTrans = Library.createSlider(uiSettingsContent, "Watermark Transparency", 0, 100, currentSettings.WatermarkTransparency, rectangle)
     local fontSizeSlider
-    fontSizeSlider, getWatermarkFontSize, fontSizeChanged, setWatermarkFontSize = createSlider(uiSettingsContent, "Watermark Font Size", 10, 24, currentSettings.WatermarkFontSize, rectangle)
+    fontSizeSlider, getWatermarkFontSize, fontSizeChanged, setWatermarkFontSize = Library.createSlider(uiSettingsContent, "Watermark Font Size", 10, 24, currentSettings.WatermarkFontSize, rectangle)
     local xPosSlider
-    xPosSlider, getWatermarkX, xPosChanged, setWatermarkX = createSlider(uiSettingsContent, "Watermark X Position", 0, 100, currentSettings.WatermarkX, rectangle)
+    xPosSlider, getWatermarkX, xPosChanged, setWatermarkX = Library.createSlider(uiSettingsContent, "Watermark X Position", 0, 100, currentSettings.WatermarkX, rectangle)
     local yPosSlider
-    yPosSlider, getWatermarkY, yPosChanged, setWatermarkY = createSlider(uiSettingsContent, "Watermark Y Position", 0, 100, currentSettings.WatermarkY, rectangle)
+    yPosSlider, getWatermarkY, yPosChanged, setWatermarkY = Library.createSlider(uiSettingsContent, "Watermark Y Position", 0, 100, currentSettings.WatermarkY, rectangle)
 
     transChanged:Connect(function(value) 
-        if watermarkLabel then 
-            watermarkLabel.BackgroundTransparency = value / 100 
+        local watermark = PlayerGui:FindFirstChild("WatermarkGui")
+        if watermark and watermark.WatermarkLabel then 
+            watermark.WatermarkLabel.BackgroundTransparency = value / 100 
             currentSettings.WatermarkTransparency = value
         end
     end)
     
     fontSizeChanged:Connect(function(value) 
-        if watermarkLabel then 
+        local watermark = PlayerGui:FindFirstChild("WatermarkGui")
+        if watermark and watermark.WatermarkLabel then 
             local size = math.floor(value) 
-            watermarkLabel.TextSize = size 
+            watermark.WatermarkLabel.TextSize = size 
             currentSettings.WatermarkFontSize = size
         end
     end)
     
     xPosChanged:Connect(function(value)
-        if watermarkLabel then
+        local watermark = PlayerGui:FindFirstChild("WatermarkGui")
+        if watermark and watermark.WatermarkLabel then
             local x = value / 100
-            watermarkLabel.AnchorPoint = Vector2.new(x, watermarkLabel.AnchorPoint.Y)
-            watermarkLabel.Position = UDim2.new(x, 0, watermarkLabel.Position.Y.Scale, 0)
+            watermark.WatermarkLabel.AnchorPoint = Vector2.new(x, watermark.WatermarkLabel.AnchorPoint.Y)
+            watermark.WatermarkLabel.Position = UDim2.new(x, 0, watermark.WatermarkLabel.Position.Y.Scale, 0)
             currentSettings.WatermarkX = value
         end
     end)
     
     yPosChanged:Connect(function(value)
-        if watermarkLabel then
+        local watermark = PlayerGui:FindFirstChild("WatermarkGui")
+        if watermark and watermark.WatermarkLabel then
             local y = value / 100
-            watermarkLabel.AnchorPoint = Vector2.new(watermarkLabel.AnchorPoint.X, y)
-            watermarkLabel.Position = UDim2.new(watermarkLabel.Position.X.Scale, 0, y, 0)
+            watermark.WatermarkLabel.AnchorPoint = Vector2.new(watermark.WatermarkLabel.AnchorPoint.X, y)
+            watermark.WatermarkLabel.Position = UDim2.new(watermark.WatermarkLabel.Position.X.Scale, 0, y, 0)
             currentSettings.WatermarkY = value
         end
     end)
@@ -210,36 +165,29 @@ local function createSettingsTab(settingsPage, rectangle)
     allUIElements.WatermarkX = setWatermarkX
     allUIElements.WatermarkY = setWatermarkY
 
-    -- ### Theme Section ###
     local themeNames = {"Blue (Default)", "Red", "Orange", "Light Purple", "Dark Purple", "Yellow", "Dark Green", "Light Green"}
     local themeColorMap = {
-        ["Blue (Default)"] = Color3.fromRGB(0, 100, 255),
-        ["Red"] = Color3.fromRGB(255, 0, 0),
-        ["Orange"] = Color3.fromRGB(255, 165, 0),
-        ["Light Purple"] = Color3.fromRGB(170, 0, 255),
-        ["Dark Purple"] = Color3.fromRGB(100, 0, 255),
-        ["Yellow"] = Color3.fromRGB(255, 255, 0),
-        ["Dark Green"] = Color3.fromRGB(0, 150, 0),
-        ["Light Green"] = Color3.fromRGB(0, 255, 0)
+        ["Blue (Default)"] = Color3.fromRGB(0, 100, 255), ["Red"] = Color3.fromRGB(255, 0, 0),
+        ["Orange"] = Color3.fromRGB(255, 165, 0), ["Light Purple"] = Color3.fromRGB(170, 0, 255),
+        ["Dark Purple"] = Color3.fromRGB(100, 0, 255), ["Yellow"] = Color3.fromRGB(255, 255, 0),
+        ["Dark Green"] = Color3.fromRGB(0, 150, 0), ["Light Green"] = Color3.fromRGB(0, 255, 0)
     }
 
     local themeDropdown, _, themeChanged
-    themeDropdown, getTheme, _, themeChanged, setTheme = createDropdown(themeContent, "Select Theme", themeNames, rectangle)
+    themeDropdown, getTheme, _, themeChanged, setTheme = Library.createDropdown(themeContent, "Select Theme", themeNames, rectangle)
     allUIElements.Theme = setTheme
     
     themeChanged:Connect(function(selectedThemeName)
         local newColor = themeColorMap[selectedThemeName]
         if newColor then
-            setThemeColor(newColor, titleLabel, subtitleLabel)
+            Library.setThemeColor(newColor, titleLabel, subtitleLabel)
             currentSettings.Theme = selectedThemeName
         end
     end)
     
-    -- ### Settings Button Logic ###
     unloadButton.MouseButton1Click:Connect(function()
         mainScreenGui:Destroy()
-        notificationGui:Destroy()
-        if watermarkGui then watermarkGui:Destroy() end
+        if PlayerGui:FindFirstChild("WatermarkGui") then PlayerGui:FindFirstChild("WatermarkGui"):Destroy() end
         if PlayerGui:FindFirstChild("ToggleGui") then PlayerGui:FindFirstChild("ToggleGui"):Destroy() end
     end)
     
@@ -251,12 +199,16 @@ local function createSettingsTab(settingsPage, rectangle)
                 currentSettings[settingName] = defaultValue
             end
         end
-        setThemeColor(themeColorMap[defaultSettings.Theme], titleLabel, subtitleLabel)
-        createNotification("BlindHub", "Settings reset to default.")
+        Library.setThemeColor(themeColorMap[defaultSettings.Theme], titleLabel, subtitleLabel)
+        Library.createNotification("BlindHub", "Settings reset to default.")
     end)
     
     saveSettingsButton.MouseButton1Click:Connect(function()
-        -- Update all settings
+        if not HttpService_Success then
+            Library.createNotification("Error", "HttpService disabled. Cannot save config.")
+            return
+        end
+        
         currentSettings.AutoFarm = getAutoFarm()
         currentSettings.InfiniteJump = getInfJump()
         currentSettings.ESP = getESP()
@@ -285,20 +237,25 @@ local function createSettingsTab(settingsPage, rectangle)
             local success, data = pcall(HttpService.JSONEncode, HttpService, currentSettings)
             if success then
                 writefile("BlindHubConfig.json", data)
-                createNotification("BlindHub", "Config saved!")
+                Library.createNotification("BlindHub", "Config saved!")
             else
-                createNotification("BlindHub", "Error saving config.")
+                Library.createNotification("BlindHub", "Error saving config.")
             end
         else
-            createNotification("BlindHub", "writefile() is not supported.")
+            Library.createNotification("BlindHub", "writefile() is not supported.")
         end
     end)
     
     loadSettingsButton.MouseButton1Click:Connect(function()
+        if not HttpService_Success then
+            Library.createNotification("Error", "HttpService disabled. Cannot load config.")
+            return
+        end
+
         if type(isfile) == "function" and isfile("BlindHubConfig.json") and type(readfile) == "function" then
             local success, data = pcall(readfile, "BlindHubConfig.json")
             if not success then
-                createNotification("BlindHub", "Error reading config file.")
+                Library.createNotification("BlindHub", "Error reading config file.")
                 return
             end
             
@@ -306,7 +263,7 @@ local function createSettingsTab(settingsPage, rectangle)
             success, loadedSettings = pcall(HttpService.JSONDecode, HttpService, data)
             
             if not success then
-                createNotification("BlindHub", "Error decoding config file.")
+                Library.createNotification("BlindHub", "Error decoding config file.")
                 return
             end
 
@@ -321,15 +278,14 @@ local function createSettingsTab(settingsPage, rectangle)
                 end
             end
             
-            setThemeColor(themeColorMap[currentSettings.Theme], titleLabel, subtitleLabel)
-            createNotification("BlindHub", "Config loaded!")
+            Library.setThemeColor(themeColorMap[currentSettings.Theme], titleLabel, subtitleLabel)
+            Library.createNotification("BlindHub", "Config loaded!")
         else
-            createNotification("BlindHub", "No config file found.")
+            Library.createNotification("BlindHub", "No config file found.")
         end
     end)
 end
 
--- ### Call the function to create the settings page ###
 if settingsPage then
     createSettingsTab(settingsPage, rectangle)
 end
@@ -338,17 +294,14 @@ end
 -- ### 5. FINAL SETUP (Keybinds, Watermark, etc.) ###
 -- ##################################################################
 
--- ### Keybind listener ###
-UserInputService.InputBegan:Connect(function(input, gameProcessed)
+game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
     if gameProcessed then return end
-    
     if input.KeyCode == currentSettings.ToggleKey then
         setUIVisible(not mainScreenGui.Enabled)
     end
 end)
 
--- ### Create the watermark ###
-createWatermark(
+Library.createWatermark(
     "using: \nBlindHubOfficial",
     currentSettings.WatermarkFontSize,
     currentSettings.WatermarkTransparency,
